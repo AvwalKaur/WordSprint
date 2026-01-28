@@ -52,6 +52,7 @@ function init() {
     textAreaFunctionality();
     textAreaFocus();
     array[0].classList.add('active');
+    resetDayNight();
 }
 
 init();

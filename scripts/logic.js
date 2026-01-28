@@ -1,55 +1,57 @@
 // CHANGING DAY OR NIGHT ICON
-dayOrNight.addEventListener('click', () => {
-    let currVal = dayOrNight.classList[1];
-    const mainCont = document.getElementById('main-container');
-    const resCont = document.querySelector('.result-container');
-    const paraCont = document.querySelector('.para-container');
-    const tryagin = document.querySelector('.tryAgain');
+function resetDayNight() {
+    dayOrNight.addEventListener('click', () => {
+        let currVal = dayOrNight.classList[1];
+        const mainCont = document.getElementById('main-container');
+        const resCont = document.querySelector('.result-container');
+        const paraCont = document.querySelector('.para-container');
+        const tryagin = document.querySelector('.tryAgain');
 
-    if (currVal === "night") {
-        // change innerHTML of button night to day
-        dayOrNight.innerHTML = `<i class="fa-regular fa-sun"></i>`;
-        // remove night from classList
-        dayOrNight.classList.remove("night");
-        // add day in classList
-        dayOrNight.classList.add("day");
-        console.log(dayOrNight.classList);
-        // change the style
-        mainCont.style.background = "rgba(30, 41, 59, 0.8)";
-        mainCont.style.borderColor = "rgba(255, 255, 255, 0.1)";
-        mainCont.style.boxShadow = "0 20px 50px rgba(0, 0, 0, 0.3)";
+        if (currVal === "night") {
+            // change innerHTML of button night to day
+            dayOrNight.innerHTML = `<i class="fa-regular fa-sun"></i>`;
+            // remove night from classList
+            dayOrNight.classList.remove("night");
+            // add day in classList
+            dayOrNight.classList.add("day");
+            console.log(dayOrNight.classList);
+            // change the style
+            mainCont.style.background = "rgba(30, 41, 59, 0.8)";
+            mainCont.style.borderColor = "rgba(255, 255, 255, 0.1)";
+            mainCont.style.boxShadow = "0 20px 50px rgba(0, 0, 0, 0.3)";
 
-        resCont.style.color = "pink";
-        tryagin.style.backgroundColor = "pink";
-        tryagin.style.color = "#000";
-    } else {
-        document.body.style.backgroundColor = "#f1f5f9";
-        // change innerHTML of button day to night
-        dayOrNight.innerHTML = `<i class="fa-solid fa-moon"></i>`;
-        // remove day from classList
-        dayOrNight.classList.remove("day");
-        // add night in classList
-        dayOrNight.classList.add("night");
-        // chnage the style
-        mainCont.style.background = "rgba(255, 255, 255, 0.7)"; // Original Glass
-        mainCont.style.borderColor = "black"; // Back to your original black border
-        mainCont.style.boxShadow = "0 20px 50px rgba(0, 0, 0, 0.1)";
+            resCont.style.color = "pink";
+            tryagin.style.backgroundColor = "pink";
+            tryagin.style.color = "#000";
+        } else {
+            document.body.style.backgroundColor = "#f1f5f9";
+            // change innerHTML of button day to night
+            dayOrNight.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+            // remove day from classList
+            dayOrNight.classList.remove("day");
+            // add night in classList
+            dayOrNight.classList.add("night");
+            // chnage the style
+            mainCont.style.background = "rgba(255, 255, 255, 0.7)"; // Original Glass
+            mainCont.style.borderColor = "black"; // Back to your original black border
+            mainCont.style.boxShadow = "0 20px 50px rgba(0, 0, 0, 0.1)";
 
-        paraCont.style.background = "rgba(255, 255, 255, 0.7)";
-        paraCont.style.color = "rgb(93, 92, 92)"; // Original gray text
+            paraCont.style.background = "rgba(255, 255, 255, 0.7)";
+            paraCont.style.color = "rgb(93, 92, 92)"; // Original gray text
 
-        resCont.style.color = "#9d00ff"; // Original stats purple
-        tryagin.style.backgroundColor = "#9d00ff";
-        tryagin.style.color = "#fff";
-    }
+            resCont.style.color = "#9d00ff"; // Original stats purple
+            tryagin.style.backgroundColor = "#9d00ff";
+            tryagin.style.color = "#fff";
+        }
 
-    textArea.focus();
-})
+        textArea.focus();
+    })
 
-// redirect back to index.html page 
-backToIndex.addEventListener('click', () => {
-    window.location.href = "index.html";
-})
+    // redirect back to index.html page 
+    backToIndex.addEventListener('click', () => {
+        window.location.href = "index.html";
+    })
+}
 
 
 
