@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #main-container {
+            border: 2px solid black;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tryAgain {
+            width: 20%;
+            margin: auto;
+        }
+
+        .para-container {
+            border: 2px solid green;
+            color: grey;
+            padding: 1rem;
+        }
+
+        #textArea {
+            padding: 1rem;
+            /*hide the text area*/
+            position: absolute;
+            opacity: 0;
+            left: -9999px;
+        }
+
+        /*adds to a span taki uske left mein cursor active ho jae*/
+        .active {
+            border-left: 2px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>WordSprint</h1>
+    <p>Real-Time Typing Speed Analyzer</p>
+
+    <div id="main-container">
+        <div class="para-container"></div>
+        <!--Text area-->
+        <textarea name="textArea" id="textArea"></textarea>
+        <div class="result-container">
+            <p class="timer">Time : <span class="timerSpan">60 sec</span></p>
+            <p class="mistakes">Mistakes : <span class="currMistakes">0</span></p>
+            <p class="rawWPM">Raw WPM : 0</p>
+            <p class="netWPM">Net WPM : 0</p>
+            <p class="accuracy">Accuracy : 0 %</p>
+        </div>
+        <button class="tryAgain">Try Again</button>
+    </div>
+</body>
+<script>
+
+    const paraContainer = document.querySelector('.para-container');
+    const tryAgain = document.querySelector('.tryAgain');
+    const textArea = document.querySelector('#textArea');
+    const timer = document.querySelector('.timer');
+    let timerSpan = document.querySelector('.timerSpan');
+    const mistakes = document.querySelector('.mistakes');
+    const raw = document.querySelector('.rawWPM');
+    const net = document.querySelector('.netWPM');
+    const acc = document.querySelector('.accuracy');
+
+    const paragraphs = [
+        "Consistency matters more than intensity when learning any new skill. Writing code daily, even for a short time, helps your brain build patterns and confidence. Progress may feel slow at first, but small efforts compound over time and lead to strong fundamentals that last longer than quick motivation bursts.",
+
+        "Debugging is not a distraction from programming; it is a core part of it. Every error message teaches you something about how systems think. Developers who embrace debugging instead of avoiding it develop deeper understanding and become more confident problem solvers.",
+
+        "Good software is not written by typing fast but by thinking clearly. Clean logic, readable code, and well-structured functions matter more than clever tricks. Writing understandable code makes collaboration easier and saves time when projects grow larger.",
+
+        "Learning programming can feel overwhelming because there is always something new to explore. The key is not to learn everything at once, but to build strong basics and slowly expand your knowledge through practice, experimentation, and real-world projects.",
+
+        "Typing accuracy is more important than typing speed. Fast typing with frequent mistakes slows you down in the long run. Developing accuracy builds rhythm and confidence, which naturally improves speed without forcing it.",
+
+        "Every complex problem becomes manageable when broken into smaller parts. Solving one small piece at a time reduces stress and improves focus. This approach works not only in coding but also in learning, planning, and decision making.",
+
+        "Projects teach lessons that tutorials cannot. When you build something on your own, you face real challenges that force you to think independently. These struggles strengthen problem-solving skills and prepare you for real development work.",
+
+        "Technology evolves quickly, but core concepts remain stable. Understanding how things work under the hood gives you flexibility to adapt to new tools and frameworks. Strong fundamentals make learning new technologies much easier.",
+
+        "Making mistakes is a natural part of growth. Every incorrect attempt provides feedback that guides improvement. Instead of fearing errors, treat them as signals that help you refine your approach and deepen your understanding.",
+
+        "Progress is rarely linear. Some days you will feel confident, and other days everything will seem confusing. Staying consistent during difficult phases is what separates temporary learners from long-term achievers."
+    ];
+
+
+    // FIRST FUNCTIONALITY => UPDATING PARAGRAPHS + RESETTING EVERYTHING :)
+    // 0th index para display first
+    const first = paragraphs[0];
+    let newFirst = "";
+    // run a loop on first 
+    for (let i = 0; i < first.length; i++) {
+        const character = first.charAt(i);
+        newFirst += `<span class="eachCharacter">${character}</span>`;
+    }
+    // console.log(newFirst);
+    paraContainer.innerHTML = newFirst;
+
+
+    // by default, paracontainer mein 0th index vali para hogi
+    // every time u click on try again paraContainer mein opara change ho rha hai successfully and rewrite ho rha by innerHTML okay
+    // jaise hi sare ek bar aa gye dobara se we are setting to 0th index so repeat hota hai iske baad
+
+    let changeParaIdx = 1;
+    let timeInterval = null;
+    tryAgain.addEventListener('click', () => {
+        // converting the indexed para into spans and then putting them into paracontainer
+        let currPara = paragraphs[changeParaIdx];
+        let newPara = "";
+        for (let i = 0; i < currPara.length; i++) {
+            const character = currPara.charAt(i);
+            newPara += `<span class="eachCharacter">${character}</span>`;
+        }
+        console.log(newPara);
+        paraContainer.innerHTML = newPara;
+        /**************************************/
+
+        changeParaIdx++;
+
+        if (changeParaIdx === paragraphs.length) {
+            console.log("Once all paragraphs have been taken");
+            // set changeParaIdx to 0 so that vhi se dobara se start hone lage 
+            changeParaIdx = 0;
+        }
+
+
+        // clear the text area when someone clicks on try again
+        textArea.value = "";
+        // update reference to new array
+        array = Array.from(paraContainer.childNodes);
+        // reset the mistakes
+        currMistakes = 0;
+        mistakes.innerHTML = `Mistakes : ${currMistakes}`;
+        // reset the timer
+        timer.innerHTML = `Time : <span class="timerSpan">60 sec</span>`;
+        timerSpan = document.querySelector('.timerSpan');
+        // try again se timer ko null set kro agar vo null nhi hai to pehle clearInterval bhi kro
+        if (timeInterval !== null) {
+            clearInterval(timeInterval);
+            timeInterval = null;
+        }
+        // abhi type nhi hua hai kuch
+        firstCharacterTyped = false;
+        // nye para ke liye cursor bhi reset krna hai
+        cursorCurrIdx = 0;
+        prevLength = 0;
+        array = Array.from(paraContainer.childNodes);
+        array[0].classList.add('active');
+        // nye para ke liye totalCharactersTyped bhi reset hoga 
+        totalCharactersTyped = 0;
+        // reset isActive 
+        isActive = true;
+    })
+
+
+
+    // SECOND FUNCTIONALITY => FORWARD TYPING + CHARACTER COMPARISON + COUNT MISTAKES
+    // textArea mein user jo type kre vo compare ho mere ek ek span ke saath jo paraContainer mein hai
+    // textArea par we will fire an input event 
+    // keep a firstCharacterType flag, ek timer start krdo 60 sec se 0 tak chalne vala 
+    // startTimer() function likh le yr
+    let firstCharacterTyped = false;
+    let textAreaValue;
+    let array = Array.from(paraContainer.childNodes);
+    let currMistakes = 0;
+    let prevLength = 0;
+    let currLength;
+    let cursorCurrIdx = 0;   // 0th span pe hai cursor intially
+    // keep cursor active in all spans 
+    array[0].classList.add('active');
+    let totalCharactersTyped = 0;
+    let isActive = true;   // means typing is allowedd IMPPPPP******
+
+
+    textArea.addEventListener('input', (e) => {
+        if (!isActive) return;   // agar active nhi hai to typing logic + mistakes count stop ho jaegi
+
+        if (!firstCharacterTyped) {
+            firstCharacterTyped = true;
+            console.log("First character has been typed :)");
+            // start timer 
+            startTimer();
+        } else {
+            console.log("Ab aage ke characters print honge bhaiyaa");
+        }
+
+        // MAIN *************************************************
+        // FUNCTIONALITY => CHARACTER COMPARISON & COUNT MISTAKES
+        textAreaValue = e.target.value;
+        let indexToCompareWith = textAreaValue.length - 1;
+        currLength = textAreaValue.length;
+        // forward typing
+        if (currLength > prevLength) {
+            // comparing ki textarea ki last character kya mere paracontainer ki usi same index ke character se match kr rhi hai ya nhi
+            if (textAreaValue.charAt(indexToCompareWith) === array[indexToCompareWith].innerText) {
+                console.log("Same", currLength, prevLength);
+                // color span as green
+                array[indexToCompareWith].style.color = "green";
+            } else {
+                console.log("Not same", currLength, prevLength);
+                // color span as red
+                array[indexToCompareWith].style.color = "red";
+                // count mistakes
+                currMistakes++;
+                mistakes.innerHTML = `<span>Mistakes : ${currMistakes}</span>`;
+            }
+            prevLength = currLength;
+            // update cursor
+            if (cursorCurrIdx < array.length - 1) {
+                array[cursorCurrIdx].classList.remove('active');
+                cursorCurrIdx++;
+                array[cursorCurrIdx].classList.add('active');
+            }
+        }
+        // backward typing
+        else if (currLength < prevLength) {
+            console.log("Backspace", currLength, prevLength);
+            // color span back to grey
+            indexToCompareWith = currLength;
+            array[indexToCompareWith].style.color = "grey";
+            prevLength--;
+            // update cursor position
+            if (cursorCurrIdx > 0) {
+                array[cursorCurrIdx].classList.remove('active');
+                cursorCurrIdx--;
+                array[cursorCurrIdx].classList.add('active');
+            }
+        }
+
+        // every time forward ya backward key press hota hai hamre number of characters typed count kre jate hain
+        totalCharactersTyped++;
+
+        // Live updating accuracy and WPM
+        // this should run only till ya to timer khatam nhi ho jata ya paragraph over ho gya hai
+
+    })
+
+
+    // THIRD FUNCTIONALITY => TIMER
+    const startTimer = () => {
+        // manlo koi previous timer chalu hai koi aur para ka usko clear krte hain 
+        if (timeInterval !== null) {
+            clearInterval(timeInterval);
+        }
+
+        // timr interval null hai means ab start hoga chalna 
+        let currTimeRemaining = 59;
+        timeInterval = setInterval(function () {
+            console.log(`Ye timer hai ${currTimeRemaining}`);
+            timerSpan.innerText = `${currTimeRemaining} sec`;
+            currTimeRemaining--;
+            if (currTimeRemaining === -1) {
+                clearInterval(timeInterval);
+                timeInterval = null;     // timer stopped
+                isActive = false;  // stop typing and counting mistakes and input lena bhi
+                updateWpmAndAccuracy();
+            }
+        }, 1000)
+    }
+
+
+    // FIFTH FUNCTIONALITY   => VERYYYY IMPPPPP************
+    // textarea ko ab hide kr diya hai => opacity 0 krke
+    // ki jaise hi koi paraContainer pe click kre to textArea pe focus ho
+    // that means text area ka input event bhi fire ho jae isliye text area ko focus krna zaroori hai
+    // text area ko hamne hide kr diya ab agar user shi type krta hai to, span ko color green if wrong usko color as red
+    document.body.addEventListener('click', () => {
+        textArea.focus();
+        console.log(document.activeElement);
+    })
+
+
+    // SIXTH FUNCITONALITY => FINDING WPM OF A PARA TYPED :)))
+    // raw WPM => speed measure only 
+    const rawWPM = (totalCharactersTyped) => {
+        // In 1 minute 
+        return Math.round(totalCharactersTyped / 5);
+    }
+
+    // accuracy 
+    const accuracy = (totalCharactersTyped, currMistakes) => {
+        if (totalCharactersTyped === 0) return 0;
+        const correctCharacters = totalCharactersTyped - currMistakes;
+        return Number(((correctCharacters / totalCharactersTyped) * 100).toFixed(1));
+    }
+
+    // net wpm => speed * accuracy(correctness)
+    const netWPM = () => {
+        return Math.round(rawWPM(totalCharactersTyped) * (accuracy(totalCharactersTyped, currMistakes)) / 100);
+    }
+
+    function updateWpmAndAccuracy() {
+        raw.innerText = `Raw WPM : ${rawWPM(totalCharactersTyped)}`
+        acc.innerText = `Accuracy : ${accuracy(totalCharactersTyped, currMistakes)} %`;
+        net.innerText = `Net WPM : ${netWPM()}`;
+    }
+
+
+    /*
+    Functionalities :
+    1. para container mein para change hote rhe try again pe click krke
+    2. user ke typing start krte hi input event fire hota hai and aage vo kitne bhi ab cheezein likhe usse fark nhi padta like baar bar reset nhi hoga so ek bar event fire ho jae boolean flag leke uski value change kr dena taki agli bar fire na ho
+    => input event typing element pe lagta hai
+    => Adding a visible text area => paracontainer mein user ko jo para hamne diya hai vo dikh rha hoga now ek visible sa textarea bna rhi hun jispe i will fire the input event and see kaise functionality ho rhi hain
+    3. paragraph ko individual character spans mein break krna hai hame and then usko paraContainer mein display krana hai
+
+    1. para-container : mein paragraphs change hote rhenge as soon as someone types on try again
+    => default se ek para hamesha hi rhega start hone pe try again pe 10 bari different paras aa jaenge
+    */
+
+
+
+
+
+    ////////*********************************//////////
+    // ROUGH AGAIN BEFORE SPLIT
+    ///////**********************************//////////
+
+    //    // defining paragraphs array
+    //     const paragraphs = [
+    //         "Consistency matters more than intensity when learning any new skill. Writing code daily, even for a short time, helps your brain build patterns and confidence. Progress may feel slow at first, but small efforts compound over time and lead to strong fundamentals that last longer than quick motivation bursts.",
+
+    //         "Debugging is not a distraction from programming; it is a core part of it. Every error message teaches you something about how systems think. Developers who embrace debugging instead of avoiding it develop deeper understanding and become more confident problem solvers.",
+
+    //         "Good software is not written by typing fast but by thinking clearly. Clean logic, readable code, and well-structured functions matter more than clever tricks. Writing understandable code makes collaboration easier and saves time when projects grow larger.",
+
+    //         "Learning programming can feel overwhelming because there is always something new to explore. The key is not to learn everything at once, but to build strong basics and slowly expand your knowledge through practice, experimentation, and real-world projects.",
+
+    //         "Typing accuracy is more important than typing speed. Fast typing with frequent mistakes slows you down in the long run. Developing accuracy builds rhythm and confidence, which naturally improves speed without forcing it.",
+
+    //         "Every complex problem becomes manageable when broken into smaller parts. Solving one small piece at a time reduces stress and improves focus. This approach works not only in coding but also in learning, planning, and decision making.",
+
+    //         "Projects teach lessons that tutorials cannot. When you build something on your own, you face real challenges that force you to think independently. These struggles strengthen problem-solving skills and prepare you for real development work.",
+
+    //         "Technology evolves quickly, but core concepts remain stable. Understanding how things work under the hood gives you flexibility to adapt to new tools and frameworks. Strong fundamentals make learning new technologies much easier.",
+
+    //         "Making mistakes is a natural part of growth. Every incorrect attempt provides feedback that guides improvement. Instead of fearing errors, treat them as signals that help you refine your approach and deepen your understanding.",
+
+    //         "Progress is rarely linear. Some days you will feel confident, and other days everything will seem confusing. Staying consistent during difficult phases is what separates temporary learners from long-term achievers."
+    //     ];
+
+
+    //     // Selecting elements
+    //     const paraContainer = document.querySelector('.para-container');
+    //     const tryAgain = document.querySelector('.tryAgain');
+    //     const textArea = document.querySelector('#textArea');
+    //     const mistakes = document.querySelector('.mistakes');
+    //     let timerSpan = document.querySelector('.timerSpan');
+    //     const timer = document.querySelector('.timer');
+    //     let raw = document.querySelector('.rawWPM');
+    //     let net = document.querySelector('.netWPM');
+    //     let acc = document.querySelector('.accuracy');
+
+    //     // declaring and defining variables
+    //     let currParaIdx = 1;
+    //     let prevLength = 0;
+    //     let currMistakes = 0;
+    //     let cursorCurrIdx = 0;
+    //     let array;
+    //     let firstCharacterTyped = false;
+    //     let interval = null;
+    //     let isTypingAllowed = true;
+    //     let totalCharactersTyped = 0;
+
+    //     // PARAGRAPH RELATED FUNCTIONS
+    //     /*breaks para into spans and usko paracontainer ke andar daal deta hai*/
+    //     function breakParagraphIntoSpans(paragraph) {
+    //         console.log(paragraph);
+    //         let spans = "";
+    //         for (let i = 0; i < paragraph.length; i++) {
+    //             spans += `<span>${paragraph[i]}</span>`;
+    //         }
+    //         console.log(spans);
+
+    //         // add to para container
+    //         paraContainer.innerHTML = spans;
+    //         array = Array.from(paraContainer.childNodes);
+    //     }
+
+    //     /*reset paragraph*/
+    //     function resetParagraph() {
+    //         breakParagraphIntoSpans(paragraphs[currParaIdx]);
+    //         currParaIdx++;
+    //         if (currParaIdx === paragraphs.length) {
+    //             currParaIdx = 0;
+    //         }
+    //     }
+
+
+
+
+    //     // TEXT AREA FUNCTIONS
+    //     /*even if the textarea has been made hidden, still abhi koi bhi body pe click krega to text area focus ho jaega and textarea ka input event bhi work krega  properly*/
+    //     function textAreaFocus() {
+    //         document.body.addEventListener('click', () => {
+    //             textArea.focus();
+    //             console.log(document.activeElement);
+    //         })
+    //     }
+
+
+    //     /*input event fire of text area*/
+    //     function textAreaFunctionality() {
+    //         textArea.addEventListener('input', (e) => {
+    //             if (!isTypingAllowed) return;
+
+    //             if (!firstCharacterTyped) {
+    //                 firstCharacterTyped = true;
+    //                 startTimer();
+    //             }
+
+    //             const textAreaValue = e.target.value;
+    //             const currLength = textAreaValue.length;
+    //             let lastIdx = textAreaValue.length - 1;
+
+    //             if (currLength > prevLength) {
+    //                 forwardTyping(lastIdx, textAreaValue);
+    //                 prevLength = currLength;
+    //                 totalCharactersTyped++;
+    //             }
+    //             if (currLength < prevLength) {
+    //                 backwardTyping(lastIdx, currLength);
+    //                 prevLength--;
+    //             }
+    //         })
+    //     }
+
+    //     function forwardTyping(lastIdx, textAreaValue) {
+    //         if (array[lastIdx].innerText === textAreaValue.charAt(lastIdx)) {
+    //             console.log("Same");
+    //             array[lastIdx].style.color = "green";
+    //         } else {
+    //             console.log("Not same");
+    //             array[lastIdx].style.color = "red";
+    //             // count mistakes 
+    //             currMistakes++;
+    //             mistakes.innerHTML = `Mistakes : ${currMistakes}`;
+    //         }
+    //         moveCursorForward();
+    //     }
+
+    //     function backwardTyping(lastIdx, currLength) {
+    //         lastIdx = currLength;
+    //         array[lastIdx].style.color = "grey";
+    //         moveCursorBackward();
+    //     }
+
+    //     function moveCursorForward() {
+    //         if (cursorCurrIdx >= array.length - 1) return;
+    //         array[cursorCurrIdx].classList.remove('active');
+    //         cursorCurrIdx++;
+    //         array[cursorCurrIdx].classList.add('active');
+    //     }
+
+    //     function moveCursorBackward() {
+    //         if (cursorCurrIdx <= 0) return;
+    //         array[cursorCurrIdx].classList.remove('active');
+    //         cursorCurrIdx--;
+    //         array[cursorCurrIdx].classList.add('active');
+    //     }
+
+
+
+
+    //     // STATS FUNCTIONS
+    //     // raw WPM => speed measure only 
+    //     function rawWPM(totalCharactersTyped) {
+    //         // In 1 minute 
+    //         return Math.round(totalCharactersTyped / 5);
+    //     }
+
+    //     // accuracy 
+    //     function accuracy(totalCharactersTyped, currMistakes) {
+    //         if (totalCharactersTyped === 0) return 0;
+    //         const correctCharacters = totalCharactersTyped - currMistakes;
+    //         return Number(((correctCharacters / totalCharactersTyped) * 100).toFixed(1));
+    //     }
+
+    //     // net wpm => speed * accuracy(correctness)
+    //     function netWPM() {
+    //         return Math.round(rawWPM(totalCharactersTyped) * (accuracy(totalCharactersTyped, currMistakes)) / 100);
+    //     }
+
+    //     function updateWpmAndAccuracy() {
+    //         raw.innerText = `Raw WPM : ${rawWPM(totalCharactersTyped)}`
+    //         acc.innerText = `Accuracy : ${accuracy(totalCharactersTyped, currMistakes)} %`;
+    //         net.innerText = `Net WPM : ${netWPM()}`;
+    //     }
+
+
+
+
+    //     // TIMER FUNCTIONS
+    //     function startTimer() {
+    //         // agar interval not null hai matlab purana timer chal rha hoga
+    //         if (interval !== null) {
+    //             clearInterval(interval);
+    //         }
+
+    //         // abhi interval null hai that means ab start hoga new timer 
+    //         let currTimeRemaining = 4;
+    //         interval = setInterval(function () {
+    //             timerSpan.innerText = `${currTimeRemaining} sec`;
+    //             currTimeRemaining--;
+    //             if (currTimeRemaining === -1) {
+    //                 clearInterval(interval);
+    //                 interval = null;
+    //                 // timer khatam to typing stopped & display stats
+    //                 isTypingAllowed = false;
+    //                 updateWpmAndAccuracy();
+    //             }
+    //         }, 1000)
+    //     }
+
+
+
+
+    //     // TRY AGAIN FUNCTIONALITY FUNCTIONS
+    //     function tryAgainFunctionality() {
+    //         tryAgain.addEventListener('click', () => {
+
+    //             // 1. reset paragraph
+    //             resetParagraph();
+
+    //             // 2. reset mistakes
+    //             currMistakes = 0;
+    //             mistakes.innerHTML = `Mistakes : ${0}`;
+
+    //             // 3. reset states
+    //             textArea.value = "";
+    //             isTypingAllowed = true;
+    //             firstCharacterTyped = false;
+    //             prevLength = 0;
+    //             cursorCurrIdx = 0;
+
+    //             // 4. reset timer 
+    //             // purana interval stop kro
+    //             if (interval !== null) {
+    //                 clearInterval(interval);
+    //                 interval = null;
+    //             }
+    //             timerSpan = document.querySelector('.timerSpan');
+    //             timerSpan.innerHTML = `60 sec`;
+
+    //             // 5. reset totalCharactersTyped
+    //             totalCharactersTyped = 0;
+    //             raw.innerText = `Raw WPM : 0`;
+    //             net.innerText = `Net WPM : 0`;
+    //             acc.innerText = `Accuracy : 0 %`;
+    //         });
+    //     }
+
+
+
+
+    //     // MAIN FUNCTION jo start mein game ke cheezein rhengi
+    //     function init() {
+    //         breakParagraphIntoSpans(paragraphs[0]);
+    //         tryAgainFunctionality();
+    //         textAreaFunctionality();
+    //         textAreaFocus();
+    //         array[0].classList.add('active');
+    //     }
+
+    //     init();
+</script>
+
+</html>

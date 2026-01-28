@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDSPRINT</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playwrite+GB+J+Guides:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <script src="scripts/paragraphs.js" defer></script>
+    <script src="scripts/dom.js" defer></script>
+    <script src="scripts/states.js" defer></script>
+    <script src="scripts/logic.js" defer></script>
+    <script src="scripts/main.js" defer></script>
+    <!--To preserve order of js => we use defer-->
+</head>
+
+<body>
+    <nav>
+        <div class="left">
+            <button class="backToIndex"><i class="fa-solid fa-arrow-left"></i></button>
+            <h1 class="wordsprint">WordSprint</h1>
+        </div>
+        <div class="right">
+            <button class="dayOrNight night"><i class="fa-solid fa-moon"></i></button>
+        </div>
+    </nav>
+
+
+    <div id="main-container">
+        <div class="para-container"></div>
+        <!--Text area-->
+        <textarea name="textArea" id="textArea"></textarea>
+        <div class="result-container">
+            <p class="timer">Time : <span class="timerSpan">60 sec</span></p>
+            <p class="mistakes">Mistakes : <span class="currMistakes">0</span></p>
+            <p class="rawWPM">Raw WPM : 0</p>
+            <p class="netWPM">Net WPM : 0</p>
+            <p class="accuracy">Accuracy : 0 %</p>
+        </div>
+        <button class="tryAgain">Try Again <i class="fa-solid fa-arrow-rotate-right"></i></button>
+    </div>
+</body>
+
+</html>

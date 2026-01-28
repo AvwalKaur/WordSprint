@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    background-color: #f1f5f9;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.left {
+    display: flex;
+    gap: 15px;
+}
+
+
+#main-container {
+    background: rgba(255, 255, 255, 0.7);
+    /* Glass effect */
+    backdrop-filter: blur(8px);
+    /* Background icons halke blur dikhenge */
+    padding: 2rem;
+    margin: 0 3rem;
+    border: 2px solid black;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wordsprint {
+    color: #9d00ff;
+}
+
+.tryAgain {
+    width: 13%;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    margin: auto;
+    border: 2px solid transparent;
+    border-radius: 1rem;
+    background: #9d00ff;
+    color: white;
+    cursor: pointer;
+}
+
+.result-container {
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    color: #9d00ff;
+    font-weight: bolder;
+}
+
+
+.para-container {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    /* border: 2px solid grey; */
+    border-radius: 24px;
+    color: rgb(93, 92, 92);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    padding: 2rem;
+}
+
+
+#textArea {
+    padding: 1rem;
+    position: absolute;
+    opacity: 0;
+    left: -9999px;
+}
+
+/*adds to a span taki uske left mein cursor active ho jae*/
+.active {
+    border-left: 2px solid #000;
+}
+
+.backToIndex,
+.dayOrNight {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border: 2px solid transparent;
+    border-radius: 50%;
+}
+
+
+/* Jab screen 768px se kam ho (Tablets & Phones) */
+@media (max-width: 768px) {
+    body {
+        /* Mobile par content thoda upar se shuru ho sakta hai */
+        align-items: flex-start;
+        padding-top: 5rem;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    nav {
+        padding: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* Vertical centering fixed */
+        width: 100%;
+    }
+
+    /* WordSprint text alignment */
+    nav h1 {
+        font-size: 1.1rem;
+        margin: 0;
+        white-space: nowrap;
+        /* Text line break nahi hoga */
+    }
+
+    /* Icons container */
+    .left {
+        gap: 8px;
+        /* Gap kam kiya taaki ek line mein aayein */
+        display: flex;
+        align-items: center;
+    }
+
+    .backToIndex,
+    .dayOrNight {
+        font-size: 1.2rem;
+        /* Icons thode chote phone ke liye */
+        padding: 0.3rem;
+    }
+
+    #main-container {
+        margin: 1rem;
+        /* Side margins kam kar di */
+        padding: 1.2rem;
+        width: 95%;
+        /* Poori width cover kare */
+    }
+
+    .para-container {
+        font-size: 1.1rem;
+        /* Phone par 1.5rem bahut bada hai */
+        padding: 1rem;
+        line-height: 1.5;
+        letter-spacing: 0.5px;
+    }
+
+    .result-container {
+        flex-direction: column;
+        /* Stats ek ke niche ek aayenge */
+        gap: 10px;
+        font-size: 1.1rem;
+        padding: 1rem 0;
+        align-items: center;
+    }
+
+    .tryAgain {
+        width: 60%;
+        /* Phone par 13% bahut chota ho jayega */
+        height: 3rem;
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .para-container {
+        font-size: 1rem;
+    }
+
+    nav h1 {
+        display: none;
+        /* Space bachane ke liye logo text hata sakte ho sirf icon rehne do */
+    }
+}
