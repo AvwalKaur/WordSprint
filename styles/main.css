@@ -11,6 +11,7 @@ body {
     background-color: #f1f5f9;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -106,8 +107,143 @@ nav {
     border-radius: 50%;
 }
 
+.checkResults {
+    margin-top: 2rem;
+}
+
+.checkSummary {
+    background-color: green;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    /*hidden pehle to*/
+    position: fixed;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    inset: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    border: 2px solid grey;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 24px;
+    width: 50%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.first {
+    gap: 10px;
+    margin: 2rem;
+}
+
+.second {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.third {
+    border-radius: 24px;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    gap: 10px;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border: 1px solid #cbc9c9;
+    border-radius: 15px;
+}
+
+.wpm,
+.acc {
+    border: 2px solid transparent;
+    padding: 0.5rem;
+    margin: 1rem;
+    font-size: 1.1rem;
+    border-radius: 1rem;
+    width: 80%;
+    color: #fff;
+}
+
+.wpm {
+    background-color: green;
+}
+
+.acc {
+    background-color: red;
+}
+
+.fourth {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.fourth h4 {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.glossary-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.glossary-item {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.4;
+}
+
+.glossary-item strong {
+    color: #9d00ff;
+    font-weight: 600;
+}
+
+.checkSummary:hover,
+.tryAgain:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.modal-content::-webkit-scrollbar {
+    display: none;
+}
 
 
+/*Responsiveness*/
 /* Jab screen 768px se kam ho (Tablets & Phones) */
 @media (max-width: 768px) {
     body {
@@ -181,6 +317,90 @@ nav {
         height: 3rem;
         font-size: 1rem;
         margin-top: 1rem;
+    }
+
+    .checkResults {
+        margin-top: 1.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        /* Button ko mobile screen ke center mein layega */
+    }
+
+    .checkSummary {
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    /*Performance*/
+    /* 1. Modal width fixed */
+    .modal-content {
+        width: 92%;
+        padding: 1rem 0.5rem;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .first h2 {
+        font-size: 1.2rem;
+    }
+
+    /* 2. Stats cards (Raw, Net, Acc) ko stack kiya */
+    .second {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        grid-template-columns: 1fr;
+        /* 3 columns ki jagah 1 column */
+        gap: 8px;
+    }
+
+    .m-card {
+        padding: 8px;
+        width: 90%;
+        background: #f8fafc;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        /* Label left, Value right */
+        align-items: center;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* 3. Feedback boxes (WPM & Accuracy) stack kiye */
+    .third {
+        flex-direction: column;
+        border: none;
+    }
+
+    .tabs {
+        width: 100%;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        padding: 0.8rem;
+    }
+
+    .wpm,
+    .acc {
+        width: 100%;
+        margin: 0.5rem 0;
+        font-size: 1rem;
+    }
+
+    /* 4. Glossary items adjustment */
+    .fourth {
+        text-align: center;
+    }
+
+    .fourth h4 {
+        font-size: 1rem;
+    }
+
+    .glossary-item {
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 5px;
     }
 }
 

@@ -53,6 +53,7 @@ function init() {
     textAreaFocus();
     array[0].classList.add('active');
     resetDayNight();
+    setupModal();
 }
 
 init();

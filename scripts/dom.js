@@ -11,3 +11,15 @@ const timer = document.querySelector('.timer');
 let raw = document.querySelector('.rawWPM');
 let net = document.querySelector('.netWPM');
 let acc = document.querySelector('.accuracy');
+
+const checkSummary = document.querySelector('.checkSummary');
+const closeModal = document.querySelector('.close-modal');
+const modal = document.querySelector('.modal');
+const mRaw = document.querySelector('#m-raw');
+const mNet = document.querySelector('#m-net');
+const mAcc = document.querySelector('#m-acc');
+const netWPMFeedback = document.querySelector('.netWPMFeedback');
+const accuracyFeedback = document.querySelector('.accuracyFeedback');
+const first = document.querySelector('.first');
+const second = document.querySelector('.second');
+const third = document.querySelector('.third');

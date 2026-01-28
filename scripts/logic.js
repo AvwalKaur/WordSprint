@@ -53,7 +53,74 @@ function resetDayNight() {
     })
 }
 
+function feedback(netValue, accValue) {
+    if (netValue !== "0" && accValue !== "0 %") {
+        // feedback on netWPM
+        if (netValue <= 20) {
+            netWPMFeedback.innerText = "Focus on memorizing key positions. Don't worry about speed yet; just find the right rhythm.";
+        }
+        else if (netValue <= 40) {
+            netWPMFeedback.innerText = "You've got the basics! Start practicing without looking at the keyboard to build muscle memory.";
+        }
+        else if (netValue <= 60) {
+            netWPMFeedback.innerText = "Great pace! To reach the next level, try to keep your hands relaxed and use all ten fingers";
+        }
+        else if (netValue <= 80) {
+            netWPMFeedback.innerText = "Excellent speed. You are now faster than 90% of people. Focus on maintaining this consistency.";
+        }
+        else {
+            netWPMFeedback.innerText = "Incredible! You are at a competitive level. Try challenging yourself with more difficult vocabularies.";
+        }
 
+        // feedback on accuracy
+        const accNum = parseInt(accValue)
+        if (accNum >= 98) {
+            accuracyFeedback.innerText = "Flawless execution! Since your accuracy is high, you can now try to push for more speed."
+        } else if (accNum >= 90) {
+            accuracyFeedback.innerText = "Solid control. You're hitting the right keys, but a bit more focus will make you perfectly precise."
+        } else if (accNum >= 80) {
+            accuracyFeedback.innerText = "You're rushing! Slow down your typing speed until you can maintain at least 95% accuracy."
+        } else {
+            accuracyFeedback.innerText = "Stop sprinting! Your accuracy is too low. Speed is useless without correctness. Go back to basics."
+        }
+    } else {
+        second.style.display = "none";
+        third.style.display = "none";
+    }
+}
+
+function setupModal() {
+    // checkSummary pe click kren to modal open ho jae 
+    checkSummary.addEventListener('click', () => {
+        // pick values from the result Container agar aa gya hai to 
+        const rawValue = raw.innerText.split(': ')[1] || "0";
+        const netValue = net.innerText.split(': ')[1] || "0";
+        const accValue = acc.innerText.split(': ')[1] || "0 %";
+
+        // update in overlay
+        mRaw.innerText = rawValue;
+        mNet.innerText = netValue;
+        mAcc.innerText = accValue;
+
+        // show the results and feedback 
+        feedback(netValue, accValue);
+
+        // show modal to user on screen
+        modal.style.display = "flex";
+    })
+
+    // close modal 
+    closeModal.addEventListener('click', () => {
+        modal.style.display = "none";
+    })
+
+    // even if we click outside modal, still it closes 
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    })
+}
 
 
 // PARAGRAPH RELATED FUNCTIONS
@@ -189,7 +256,7 @@ function startTimer() {
     }
 
     // abhi interval null hai that means ab start hoga new timer 
-    let currTimeRemaining = 59;
+    let currTimeRemaining = 5;
     interval = setInterval(function () {
         timerSpan.innerText = `${currTimeRemaining} sec`;
         currTimeRemaining--;

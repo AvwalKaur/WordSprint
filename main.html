@@ -45,6 +45,61 @@
         </div>
         <button class="tryAgain">Try Again <i class="fa-solid fa-arrow-rotate-right"></i></button>
     </div>
+
+    <!--Overlay-->
+    <div class="checkResults">
+        <button class="checkSummary">Check Summary</button>
+    </div>
+    <div id="summaryModal" class="modal">
+        <!--Modal is full screen overlay and modal-content is center ka box-->
+        <div class="modal-content">
+            <div class="first">
+                <span class="close-modal">&times;</span>
+                <h2 style="color: #9d00ff;">Performance Summary <i class="fa-solid fa-chart-area"></i></h2>
+            </div>
+
+            <div class="second">
+                <div class="m-card">
+                    <span class="m-label">Raw WPM : </span>
+                    <span id="m-raw" class="m-value">0</span>
+                </div>
+                <div class="m-card">
+                    <span class="m-label">Net WPM : </span>
+                    <span id="m-net" class="m-value">0</span>
+                </div>
+                <div class="m-card">
+                    <span class="m-label">Accuracy : </span>
+                    <span id="m-acc" class="m-value">0%</span>
+                </div>
+            </div>
+
+            <div class="third">
+                <div class="tabs">
+                    <h3 class="wpm">WPM</h3>
+                    <p class="netWPMFeedback"></p>
+                </div>
+                <div class="tabs">
+                    <h3 class="acc">Accuracy</h3>
+                    <p class="accuracyFeedback"></p>
+                </div>
+            </div>
+
+            <div class="fourth">
+                <h4>GLOSSARY</h4>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <strong>Raw WPM:</strong> Your total typing speed (including errors).
+                    </div>
+                    <div class="glossary-item">
+                        <strong>Net WPM:</strong> Your real speed (only correct words).
+                    </div>
+                    <div class="glossary-item">
+                        <strong>Accuracy:</strong> How precise you were with your keys.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
