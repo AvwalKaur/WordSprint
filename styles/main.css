@@ -52,7 +52,8 @@ nav {
     color: #9d00ff;
 }
 
-.tryAgain {
+.tryAgain,
+.checkSummary {
     width: 13%;
     height: 2.5rem;
     font-size: 1.2rem;
@@ -62,6 +63,11 @@ nav {
     background: #9d00ff;
     color: white;
     cursor: pointer;
+}
+
+.buttons {
+    margin-top: 2rem;
+    text-align: center;
 }
 
 .result-container {
@@ -105,19 +111,6 @@ nav {
     padding: 0.5rem;
     border: 2px solid transparent;
     border-radius: 50%;
-}
-
-.checkResults {
-    margin-top: 2rem;
-}
-
-.checkSummary {
-    background-color: green;
-    color: #fff;
-    padding: 0.5rem;
-    border-radius: 0.2rem;
-    border: 2px solid transparent;
-    cursor: pointer;
 }
 
 .modal {
@@ -287,11 +280,13 @@ nav {
     }
 
     #main-container {
-        margin: 1rem;
-        /* Side margins kam kar di */
+        margin: 1rem auto;
         padding: 1.2rem;
-        width: 95%;
-        /* Poori width cover kare */
+        width: 90%;
+    }
+
+    .wordsprint {
+        font-size: 1.6rem;
     }
 
     .para-container {
@@ -319,17 +314,32 @@ nav {
         margin-top: 1rem;
     }
 
-    .checkResults {
-        margin-top: 1.5rem;
-        width: 100%;
+    .buttons {
         display: flex;
+        flex-direction: row;
         justify-content: center;
-        /* Button ko mobile screen ke center mein layega */
+        gap: 10px;
+        width: 100%;
+        margin-top: 1.5rem;
     }
 
+    .tryAgain,
     .checkSummary {
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        width: 45%;
+        /* Mobile screen ke hisaab se wide enough */
+        height: 3.2rem;
+        /* Touch karne mein easy */
+        font-size: 0.95rem;
+        /* Text fit ho jaye */
+        margin: 0;
+        /* Auto margin hata diya flex handle karega */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        padding: 5px;
+        white-space: nowrap;
+        /* Text break na ho */
     }
 
     /*Performance*/
