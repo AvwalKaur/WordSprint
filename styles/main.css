@@ -72,9 +72,9 @@ nav {
 
 .tryAgain,
 .checkSummary {
-    width: 13%;
+    width: 15%;
     height: 2.5rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: auto;
     border: 2px solid transparent;
     border-radius: 1rem;
@@ -84,22 +84,22 @@ nav {
 }
 
 .buttons {
-    margin-top: 2rem;
+    margin-top: 1.8rem;
     text-align: center;
 }
 
 .result-container {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     display: flex;
     justify-content: space-between;
-    padding: 2rem;
+    padding: 1rem;
     color: #9d00ff;
     font-weight: bolder;
 }
 
 
 .para-container {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     letter-spacing: 1px;
     word-spacing: 2px;
     /* border: 2px solid grey; */
@@ -107,7 +107,7 @@ nav {
     color: rgb(93, 92, 92);
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(8px);
-    padding: 2rem;
+    padding: 1.2rem;
 }
 
 

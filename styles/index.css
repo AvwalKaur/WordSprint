@@ -60,7 +60,7 @@ body {
 }
 
 .head {
-    font-size: 3.5rem;
+    font-size: 3.3rem;
 }
 
 .heading {
@@ -71,7 +71,7 @@ body {
 }
 
 .para {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #a30fff;
     font-weight: 500;
     margin: 1rem;
@@ -81,7 +81,7 @@ body {
     /* border: 2px solid black; */
     height: 2rem;
     margin-top: 2rem;
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 
 .typingGIF {
