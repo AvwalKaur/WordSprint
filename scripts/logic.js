@@ -202,6 +202,7 @@ function textAreaFunctionality() {
 }
 
 function forwardTyping(lastIdx, textAreaValue) {
+    if (lastIdx >= array.length) return;
     if (array[lastIdx].innerText === textAreaValue.charAt(lastIdx)) {
         console.log("Same");
         array[lastIdx].style.color = "var(--correct)";
@@ -212,20 +213,35 @@ function forwardTyping(lastIdx, textAreaValue) {
         currMistakes++;
         mistakes.innerHTML = `Mistakes : ${currMistakes}`;
     }
-    moveCursorForward();
+    moveCursorForward(lastIdx);
 }
 
 function backwardTyping(lastIdx, currLength) {
-    lastIdx = currLength;
-    array[lastIdx].style.color = "var(--untyped)";
-    moveCursorBackward();
+    // 1. Saare characters jo delete hue hain (current length ke aage wale) unhe reset karo
+    // Ye loop ensure karega ki agar user ne 5 letter delete kiye toh 5 reset hon
+    for (let i = currLength; i < array.length; i++) {
+        array[i].style.color = "var(--untyped)";
+        array[i].classList.remove('active');
+    }
+
+    // 2. Cursor ko update karo current length par
+    cursorCurrIdx = currLength;
+
+    // 3. Current position par active class lagao
+    if (array[cursorCurrIdx]) {
+        array.forEach(span => span.classList.remove('active')); // Clean up
+        array[cursorCurrIdx].classList.add('active');
+    }
 }
 
-function moveCursorForward() {
-    if (cursorCurrIdx >= array.length - 1) return;
-    array[cursorCurrIdx].classList.remove('active');
-    cursorCurrIdx++;
-    array[cursorCurrIdx].classList.add('active');
+function moveCursorForward(lastIdx) {
+    array.forEach(span => span.classList.remove('active'));
+
+    // Agle wale pe active lagao
+    if (lastIdx + 1 < array.length) {
+        cursorCurrIdx = lastIdx + 1;
+        array[cursorCurrIdx].classList.add('active');
+    }
 }
 
 function moveCursorBackward() {
