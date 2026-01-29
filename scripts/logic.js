@@ -9,6 +9,7 @@ function resetDayNight() {
         const checkSumBtn = document.querySelector('.checkSummary');
 
         if (currVal === "night") {
+            // dark mode
             document.body.classList.add("night");
             document.body.style.backgroundColor = "#0f172a";
             // change innerHTML of button night to day
@@ -26,16 +27,17 @@ function resetDayNight() {
             paraCont.style.background = "rgba(15, 23, 42, 0.6)"; // Thoda aur dark
             paraCont.style.color = "#d8dfe8";
 
-            resCont.style.color = "#bc61ff";
-            tryagin.style.backgroundColor = "#bc61ff";
+            resCont.style.color = "rgb(255 227 152)";
+            tryagin.style.backgroundColor = "#ffff3e";
             tryagin.style.color = "#000";
 
 
             if (checkSumBtn) {
-                checkSumBtn.style.backgroundColor = "#bc61ff";
+                checkSumBtn.style.backgroundColor = "#ffff3e";
                 checkSumBtn.style.color = "#000";
             }
         } else {
+            // light mode
             document.body.classList.remove("night");
             document.body.style.backgroundColor = "#f1f5f9";
             // change innerHTML of button day to night

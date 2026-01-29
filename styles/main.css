@@ -30,6 +30,10 @@ body.night {
     --cursorColor: #fff;
 }
 
+body.night .wordsprint {
+    color: #ffff3e;
+}
+
 nav {
     position: absolute;
     top: 0;
