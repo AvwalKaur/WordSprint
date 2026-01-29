@@ -6,8 +6,11 @@ function resetDayNight() {
         const resCont = document.querySelector('.result-container');
         const paraCont = document.querySelector('.para-container');
         const tryagin = document.querySelector('.tryAgain');
+        const checkSumBtn = document.querySelector('.checkSummary');
 
         if (currVal === "night") {
+            document.body.classList.add("night");
+            document.body.style.backgroundColor = "#0f172a";
             // change innerHTML of button night to day
             dayOrNight.innerHTML = `<i class="fa-regular fa-sun"></i>`;
             // remove night from classList
@@ -16,14 +19,24 @@ function resetDayNight() {
             dayOrNight.classList.add("day");
             console.log(dayOrNight.classList);
             // change the style
-            mainCont.style.background = "rgba(30, 41, 59, 0.8)";
-            mainCont.style.borderColor = "rgba(255, 255, 255, 0.1)";
+            mainCont.style.background = "rgba(30, 41, 59, 0.7)";
+            mainCont.style.borderColor = "#334155";
             mainCont.style.boxShadow = "0 20px 50px rgba(0, 0, 0, 0.3)";
 
-            resCont.style.color = "pink";
-            tryagin.style.backgroundColor = "pink";
+            paraCont.style.background = "rgba(15, 23, 42, 0.6)"; // Thoda aur dark
+            paraCont.style.color = "#d8dfe8";
+
+            resCont.style.color = "#bc61ff";
+            tryagin.style.backgroundColor = "#bc61ff";
             tryagin.style.color = "#000";
+
+
+            if (checkSumBtn) {
+                checkSumBtn.style.backgroundColor = "#bc61ff";
+                checkSumBtn.style.color = "#000";
+            }
         } else {
+            document.body.classList.remove("night");
             document.body.style.backgroundColor = "#f1f5f9";
             // change innerHTML of button day to night
             dayOrNight.innerHTML = `<i class="fa-solid fa-moon"></i>`;
@@ -37,11 +50,16 @@ function resetDayNight() {
             mainCont.style.boxShadow = "0 20px 50px rgba(0, 0, 0, 0.1)";
 
             paraCont.style.background = "rgba(255, 255, 255, 0.7)";
-            paraCont.style.color = "rgb(93, 92, 92)"; // Original gray text
+            paraCont.style.color = "var(--untyped)"; // Original gray text
 
             resCont.style.color = "#9d00ff"; // Original stats purple
             tryagin.style.backgroundColor = "#9d00ff";
             tryagin.style.color = "#fff";
+
+            if (checkSumBtn) {
+                checkSumBtn.style.backgroundColor = "#9d00ff"; // Dono same purple
+                checkSumBtn.style.color = "#fff";
+            }
         }
 
         textArea.focus();
@@ -186,10 +204,10 @@ function textAreaFunctionality() {
 function forwardTyping(lastIdx, textAreaValue) {
     if (array[lastIdx].innerText === textAreaValue.charAt(lastIdx)) {
         console.log("Same");
-        array[lastIdx].style.color = "green";
+        array[lastIdx].style.color = "var(--correct)";
     } else {
         console.log("Not same");
-        array[lastIdx].style.color = "#ef4444";
+        array[lastIdx].style.color = "var(--incorrect)";
         // count mistakes 
         currMistakes++;
         mistakes.innerHTML = `Mistakes : ${currMistakes}`;
@@ -199,7 +217,7 @@ function forwardTyping(lastIdx, textAreaValue) {
 
 function backwardTyping(lastIdx, currLength) {
     lastIdx = currLength;
-    array[lastIdx].style.color = "rgb(93, 92, 92)";
+    array[lastIdx].style.color = "var(--untyped)";
     moveCursorBackward();
 }
 
@@ -256,7 +274,7 @@ function startTimer() {
     }
 
     // abhi interval null hai that means ab start hoga new timer 
-    let currTimeRemaining = 5;
+    let currTimeRemaining = 59;
     interval = setInterval(function () {
         timerSpan.innerText = `${currTimeRemaining} sec`;
         currTimeRemaining--;

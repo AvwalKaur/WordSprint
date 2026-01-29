@@ -1,3 +1,10 @@
+:root {
+    --correct: green;
+    --incorrect: #ef4444;
+    --untyped: rgb(93, 92, 92);
+    --cursorColor: #000;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,6 +21,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+body.night {
+    --correct: #4ade80;
+    --incorrect: #fb7185;
+    --untyped: #e2e8f0;
+    --cursorColor: #fff;
 }
 
 nav {
@@ -102,7 +116,7 @@ nav {
 
 /*adds to a span taki uske left mein cursor active ho jae*/
 .active {
-    border-left: 2px solid #000;
+    border-left: 2px solid var(--cursorColor);
 }
 
 .backToIndex,
@@ -420,7 +434,11 @@ nav {
     }
 
     nav h1 {
-        display: none;
-        /* Space bachane ke liye logo text hata sakte ho sirf icon rehne do */
+        display: block;
+        font-size: 0.9rem;
+    }
+
+    .left {
+        gap: 10px;
     }
 }
