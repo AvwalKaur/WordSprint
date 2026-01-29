@@ -50,10 +50,14 @@ function init() {
     breakParagraphIntoSpans(paragraphs[0]);
     tryAgainFunctionality();
     textAreaFunctionality();
+    paraContainer.addEventListener('click', () => {
+        textArea.focus();
+    })
     textAreaFocus();
     array[0].classList.add('active');
     resetDayNight();
     setupModal();
+
 }
 
 init();
